@@ -3,7 +3,7 @@ function HTMLActuator() {
   this.scoreContainer   = document.querySelector(".score-container");
   this.bestContainer    = document.querySelector(".best-container");
   this.messageContainer = document.querySelector(".game-message");
-  this.magic = 3; //affects mergability
+  this.magic = 5; //affects mergability
 
   this.score = 0;
 }

@@ -264,7 +264,7 @@ GameManager.prototype.valuesCanMerge = function(a, b) {
 };
 
 GameManager.prototype.mergeTiles = function(a, b) {
-	return a+b;
+	return a+b+1;
 };
 
 GameManager.prototype.positionsEqual = function (first, second) {
