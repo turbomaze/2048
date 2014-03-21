@@ -58,8 +58,10 @@ GameManager.prototype.addStartTiles = function () {
 
 // Adds a tile in a random position
 GameManager.prototype.addRandomTile = function () {
-  var candidates = [[1/6, 1], [1/6, 2], [1/6, 3],
-  					[1/6, 4], [1/6, 5], [1/6, 6]]; //chance of getting each #
+  var candidates = []; //array of [chance of getting each #, the #]
+  for (var ai = 0; ai < this.actuator.magic; ai++) {
+  	candidates.push([1/this.actuator.magic, ai+1]);
+  }
   var bucket = Math.random();
   var value = 0;
   for (var ai = 0; ai < candidates.length; ai++) {
@@ -258,8 +260,7 @@ GameManager.prototype.valuesCanMerge = function(a, b) {
 		else return gcd(y, x%y);
 	}
 
-	var magic = 6;
-	return a%magic === b%magic;
+	return a%this.actuator.magic === b%this.actuator.magic;
 };
 
 GameManager.prototype.mergeTiles = function(a, b) {

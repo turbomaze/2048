@@ -1,3 +1,3 @@
-# 2048 Edit
+# 2048 (mod 3)
 
-2048 with some changes. Basically going to play around with it and see if anything cool comes up.
+The game 2048 but instead of like numbers merging, only numbers congruent to eachother mod 3 can merge.
