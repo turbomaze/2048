@@ -58,8 +58,19 @@ GameManager.prototype.addStartTiles = function () {
 
 // Adds a tile in a random position
 GameManager.prototype.addRandomTile = function () {
+  var candidates = [[1/6, 1], [1/6, 2], [1/6, 3],
+  					[1/6, 4], [1/6, 5], [1/6, 6]]; //chance of getting each #
+  var bucket = Math.random();
+  var value = 0;
+  for (var ai = 0; ai < candidates.length; ai++) {
+    bucket -= candidates[ai][0];
+    if (bucket <= 0) {
+      value = candidates[ai][1];
+      break;
+    }
+  }
+
   if (this.grid.cellsAvailable()) {
-    var value = Math.random() < 0.9 ? 2 : 4;
     var tile = new Tile(this.grid.randomAvailableCell(), value);
 
     this.grid.insertTile(tile);
@@ -126,8 +137,8 @@ GameManager.prototype.move = function (direction) {
         var next      = self.grid.cellContent(positions.next);
 
         // Only one merger per row traversal?
-        if (next && next.value === tile.value && !next.mergedFrom) {
-          var merged = new Tile(positions.next, tile.value * 2);
+        if (next && self.valuesCanMerge(next.value, tile.value) && !next.mergedFrom) {
+          var merged = new Tile(positions.next, self.mergeTiles(next.value, tile.value));
           merged.mergedFrom = [tile, next];
 
           self.grid.insertTile(merged);
@@ -229,7 +240,7 @@ GameManager.prototype.tileMatchesAvailable = function () {
 
           var other  = self.grid.cellContent(cell);
 
-          if (other && other.value === tile.value) {
+          if (other && self.valuesCanMerge(other.value, tile.value)) {
             return true; // These two tiles can be merged
           }
         }
@@ -238,6 +249,21 @@ GameManager.prototype.tileMatchesAvailable = function () {
   }
 
   return false;
+};
+
+GameManager.prototype.valuesCanMerge = function(a, b) {
+	function gcd(x, y) {
+		if (x < y) return gcd(y, x);
+		else if (y === 0) return x;
+		else return gcd(y, x%y);
+	}
+
+	var magic = 6;
+	return a%magic === b%magic;
+};
+
+GameManager.prototype.mergeTiles = function(a, b) {
+	return a+b;
 };
 
 GameManager.prototype.positionsEqual = function (first, second) {
